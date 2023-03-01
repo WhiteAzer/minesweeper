@@ -1,0 +1,17 @@
+.GameField {
+  display: flex;
+  flex-wrap: wrap;
+
+  width: calc(16 * var(--game-cell-size));
+  position: relative;
+
+  &_row {
+    display: flex;
+  }
+
+  &_mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
