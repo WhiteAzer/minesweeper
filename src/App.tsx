@@ -1,12 +1,14 @@
 import "./styles/index.scss";
 import { GameField } from "./components/GameField/GameField";
-import { Stopwatch } from "./components/Stopwatch/Stopwatch";
+import { GameHeader } from "./components/GameHeader/GameHeader";
+import { GameProvider } from "./context/GameProvider";
 
 
 export const App = () => {
   return (
     <>
-      <Stopwatch/>
+      <GameHeader/>
       <GameField/>
-    </>);
+    </>
+  );
 }

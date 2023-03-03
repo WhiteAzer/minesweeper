@@ -1,15 +1,12 @@
 import { createContext } from "react";
+import { GameMap, GameState } from "../types/game";
 
-export enum Themes {
-  LIGHT = "light",
-  DARK = "dark"
+
+export interface GameContextProps {
+  gameState?: GameState;
+  setGameState?: (gameState: GameState) => void;
+  map?: GameMap;
+  setMap?: (map: GameMap | ((prev: GameMap) => GameMap)) => void;
 }
 
-export interface ThemeContextProps {
-  theme?: Themes;
-  setTheme?: (theme: Themes) => void;
-}
-
-export const ThemeContext = createContext<ThemeContextProps>({});
-
-export const LOCALSTORAGE_KEY_NAME = "theme";
+export const GameContext = createContext<GameContextProps>( {} );

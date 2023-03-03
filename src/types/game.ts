@@ -1,7 +1,21 @@
-export type GameCellInnerState = -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+export enum CellState {
+  ACTIVE = "active",
+  SELECTED = "selected",
+  CLICKEDBOMB = "clickedBomb",
+  FLAG = "flag",
+  GUESS = "guess"
+}
 
-export type GameMap = Array<Array<GameCellInnerState>>;
+export interface IGameCell {
+  inner: number;
+  state: CellState;
+}
 
-export type GameCellMaskState = "active" | "selected" | "flag" | "guess";
+export type GameMap = Array<Array<IGameCell>>;
 
-export type GameMask = Array<Array<GameCellMaskState>>;
+export enum GameState {
+  STARTED = "started",
+  LOOSED = "loosed",
+  WINED ="wined",
+  NOTSTARTED = "notStarted"
+}
