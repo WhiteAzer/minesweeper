@@ -15,7 +15,7 @@ import EightImg from "../../asset/8.png"
 
 
 
-const CellImgs: Array<any> = [EmptyImg, OneImg, TwoImg, ThreeImg, FourImg, FiveImg, SixImg, SevenImg, EightImg, BombImg]
+const CellImgs: Array<string> = [EmptyImg, OneImg, TwoImg, ThreeImg, FourImg, FiveImg, SixImg, SevenImg, EightImg, BombImg]
 
 interface GameCellProps {
   cellState: GameCellInnerState;
