@@ -1,2 +1,9 @@
 @import "reset";
 @import "vars/global";
+
+.container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

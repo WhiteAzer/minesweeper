@@ -1,8 +1,7 @@
-import { FC, useCallback, useContext, useRef, useState } from "react";
+import { FC } from "react";
 import styles from "./Stopwatch.module.scss"
 import classNames from "classnames";
 import { formatNum } from "../../helpers/formatNum";
-import { GameContext } from "../../context/GameContext";
 import { useStopwatch } from "./hooks/useStopwatch";
 
 interface StopwatchProps {

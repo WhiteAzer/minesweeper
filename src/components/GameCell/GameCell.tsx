@@ -1,8 +1,11 @@
 import { FC } from "react";
 import styles from "./GameCell.module.scss"
-import clickedBomb from "../../asset/clickedBomb.png"
+import ClickedBomb from "../../asset/clickedBomb.png"
 import LockImg from "../../asset/lock.png"
 import BombImg from "../../asset/bomb.png"
+import Flag from "../../asset/flag.png"
+import FakeFlag from "../../asset/fakeFlag.png"
+import Guess from "../../asset/guess.png"
 import EmptyImg from "../../asset/0.png"
 import OneImg from "../../asset/1.png"
 import TwoImg from "../../asset/2.png"
@@ -16,7 +19,10 @@ import { CellState, IGameCell } from "../../types/game";
 
 const cellLockImgs: Record<string, string> = {
   [ CellState.ACTIVE ]: LockImg,
-  [CellState.CLICKEDBOMB]: clickedBomb
+  [ CellState.CLICKED_BOMB ]: ClickedBomb,
+  [ CellState.FLAG ]: Flag,
+  [ CellState.GUESS ]: Guess,
+  [ CellState.FAKE_FLAG ]: FakeFlag
 }
 const cellInnerImgs: Array<string> = [ EmptyImg, OneImg, TwoImg, ThreeImg, FourImg, FiveImg, SixImg, SevenImg, EightImg, BombImg ]
 
@@ -28,7 +34,7 @@ interface GameCellProps {
 
 export const GameCell: FC<GameCellProps> = ( { cell, i, j } ) => {
   return (
-    <img src={ cell.state === CellState.ACTIVE || cell.state === CellState.CLICKEDBOMB
+    <img src={ cell.state !== CellState.SELECTED
       ? cellLockImgs[ cell.state ]
       : cellInnerImgs.at( cell.inner ) }
          className={ styles.GameCell } data-i={ i } data-j={ j }/>

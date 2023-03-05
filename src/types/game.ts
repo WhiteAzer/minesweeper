@@ -1,9 +1,10 @@
 export enum CellState {
   ACTIVE = "active",
   SELECTED = "selected",
-  CLICKEDBOMB = "clickedBomb",
+  CLICKED_BOMB = "clickedBomb",
   FLAG = "flag",
-  GUESS = "guess"
+  GUESS = "guess",
+  FAKE_FLAG = "fakeFlag"
 }
 
 export interface IGameCell {
@@ -17,5 +18,5 @@ export enum GameState {
   STARTED = "started",
   LOOSED = "loosed",
   WINED ="wined",
-  NOTSTARTED = "notStarted"
+  NOT_STARTED = "notStarted"
 }

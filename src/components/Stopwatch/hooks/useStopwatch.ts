@@ -32,7 +32,7 @@ export const useStopwatch = () => {
       }, 1000 );
     } else {
       clearInterval( inc.current );
-      if ( gameState === GameState.NOTSTARTED )
+      if ( gameState === GameState.NOT_STARTED )
         setTime( time => 0 );
     }
   }, [ gameState ] );

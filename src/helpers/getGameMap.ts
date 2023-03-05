@@ -14,17 +14,23 @@ const setSurroundings = ( map: GameMap, i: number, j: number, size: number ) => 
   return map;
 }
 
-export const getGameMap = ( size: number, bombsCount: number, initialCoords?: [ number, number ] ): GameMap => {
-  const map: GameMap = new Array( size );
+export const getGameMap = ( size: number, bombsCount: number, initialCoords?: [ number, number ], baseMap?: GameMap ): GameMap => {
+  let map;
 
-  for ( let i = 0; i < size; i++ ) {
-    map[ i ] = [];
-    for ( let j = 0; j < size; j++ ) {
-      map[ i ][ j ] = {
-        inner: 0,
-        state: CellState.ACTIVE
+  if ( !baseMap ) {
+    map = new Array( size );
+
+    for ( let i = 0; i < size; i++ ) {
+      map[ i ] = [];
+      for ( let j = 0; j < size; j++ ) {
+        map[ i ][ j ] = {
+          inner: 0,
+          state: CellState.ACTIVE
+        }
       }
     }
+  } else {
+    map = baseMap;
   }
 
   for ( let count = 0; count < bombsCount; count++ ) {
@@ -40,8 +46,6 @@ export const getGameMap = ( size: number, bombsCount: number, initialCoords?: [ 
 
     setSurroundings( map, i, j, size );
   }
-
-  // if ( initialCoords ) map[ initialCoords[ 0 ] ][ initialCoords[ 1 ] ].state = CellState.SELECTED;
 
   return map;
 }

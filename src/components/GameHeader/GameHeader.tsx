@@ -6,13 +6,10 @@ import { MineCounter } from "../MineCounter/MineCounter";
 import { GameStateIndicator } from "../GameStateIndicator/GameStateIndicator";
 
 
-interface GameHeaderProps {
-}
-
-export const GameHeader: FC<GameHeaderProps> = ( {} ) => {
+export const GameHeader: FC = ( {} ) => {
   return (
     <div className={ classNames( styles.GameHeader ) }>
-      <MineCounter mineCount={38}/>
+      <MineCounter/>
       <GameStateIndicator/>
       <Stopwatch/>
     </div>

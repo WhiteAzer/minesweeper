@@ -4,29 +4,32 @@ import classNames from "classnames";
 import { GameState } from "../../types/game";
 import { GameContext } from "../../context/GameContext";
 
-import notStarted from "../../asset/notstarted.png"
-import started from "../../asset/started.png"
-import loosed from "../../asset/loosed.png"
-import { getGameMap } from "../../helpers/getGameMap";
+import NotStarted from "../../asset/notstarted.png"
+import Started from "../../asset/started.png"
+import Loosed from "../../asset/loosed.png"
+import MouseDown from "../../asset/mouseDown.png"
+import Wined from "../../asset/wined.png"
 
-const size = 16;
+import { getGameMap } from "../../helpers/getGameMap";
+import { MAP_SIZE } from "../../vars/game";
 
 const GameStateImgs = {
-  [ GameState.STARTED ]: started,
-  [ GameState.LOOSED ]: loosed,
-  [ GameState.WINED ]: notStarted,
-  [ GameState.NOTSTARTED ]: notStarted
+  [ GameState.STARTED ]: Started,
+  [ GameState.LOOSED ]: Loosed,
+  [ GameState.WINED ]: Wined,
+  [ GameState.NOT_STARTED ]: NotStarted
 }
 
 export const GameStateIndicator: FC = ( {} ) => {
-  const { gameState, setGameState, setMap } = useContext( GameContext );
+  const { gameState, setGameState, setMap, isMouseDown, setOpenedCellsCount } = useContext( GameContext );
 
   const handleClick = useCallback( () => {
-    setGameState( GameState.NOTSTARTED );
-    setMap(getGameMap( size, 0 ))
+    setGameState( GameState.NOT_STARTED );
+    setMap(getGameMap( MAP_SIZE, 0 ))
+    setOpenedCellsCount(0);
   }, [] );
 
   return (
-    <img src={ GameStateImgs[ gameState ] } className={ styles.GameState } onClick={ handleClick }/>
+    <img src={ isMouseDown? MouseDown : GameStateImgs[ gameState ] } className={ styles.GameState } onClick={ handleClick }/>
   )
 }

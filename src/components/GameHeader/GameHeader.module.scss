@@ -1,7 +1,12 @@
 .GameHeader {
-  width: calc(var(--game-cell-size) * 16);
+  width: 100%;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  padding: 5px;
+
+  border: var(--game-border);
+  margin-bottom: 10px;
 }

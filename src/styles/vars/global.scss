@@ -2,4 +2,11 @@
   //Size
   --game-cell-size: 27px;
   --header-item-height: 35px;
+  --map-size: 16;
+  --game-size: calc(var(--game-cell-size) * var(--map-size) + 2 * var(--game-border-size));
+
+  --game-border-size: 5px;
+  --game-border: inset var(--game-border-size) #d4d0d6;
+
+  --game-bgcolor: #b3b3b3;
 }
