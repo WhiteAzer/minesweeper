@@ -1,0 +1,16 @@
+.Game {
+  min-width: var(--game-size);
+  max-width: var(--game-size);
+  background-color: var(--game-bgcolor);
+  padding: 10px;
+  box-sizing: content-box;
+
+  @media (max-width: 470px) {
+    transform: scale(0.8);
+
+  }
+
+  @media (max-width: 400px) {
+    transform: scale(0.6);
+  }
+}
