@@ -4,18 +4,16 @@ import classNames from "classnames";
 import { formatNum } from "../../helpers/formatNum";
 import { useStopwatch } from "./hooks/useStopwatch";
 
-interface StopwatchProps {
-}
+export const Stopwatch: FC = ( {} ) => {
+  const { time } = useStopwatch();
 
-export const Stopwatch: FC<StopwatchProps> = ( {} ) => {
-  const {time} = useStopwatch();
+  const imgs = formatNum( time );
 
-  const imgs = formatNum(time)
   return (
     <div className={ classNames( styles.Stopwatch ) }>
       {
-        imgs.map( (el, i) =>
-          <img src={ el } className={ classNames( styles.Stopwatch_item ) } key={i}/>
+        imgs.map( ( el, i ) =>
+          <img src={ el } className={ classNames( styles.Stopwatch_item ) } key={ i }/>
         )
       }
     </div>

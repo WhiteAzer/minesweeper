@@ -1,6 +1,6 @@
 import { GameContext } from "./GameContext";
-import { ReactNode, useCallback, useMemo, useState } from "react";
-import { GameMap, GameState } from "../types/game";
+import { ReactNode, useState } from "react";
+import { GameState, IGameContext } from "../types/game";
 import { getGameMap } from "../helpers/getGameMap";
 import { MAP_SIZE } from "../vars/game";
 
@@ -10,30 +10,16 @@ interface Props {
 }
 
 export const GameProvider = ( { children }: Props ) => {
-  const [ gameState, setGameState ] = useState( GameState.NOT_STARTED );
-  const [ map, setMap ] = useState<GameMap>( getGameMap( MAP_SIZE, 0 ) );
-  const [isMouseDown, setMouseDown] = useState( false );
-  const [ flagsCount, setFlagsCount ] = useState( 0 );
-  const [openedCellsCount, setOpenedCellsCount] = useState( 0 );
-
-  const toggleIsMouseDown = useCallback(() => setMouseDown(!isMouseDown), [isMouseDown]);
-
-  const defaultValue = useMemo( () => (
-    {
-      gameState,
-      setGameState,
-      map,
-      setMap,
-      isMouseDown,
-      toggleIsMouseDown,
-      flagsCount,
-      setFlagsCount,
-      openedCellsCount,
-      setOpenedCellsCount
-    }), [ gameState, map, isMouseDown, flagsCount ] )
+  const [ gameContext, setGameContext ] = useState<IGameContext>( {
+    map: getGameMap( MAP_SIZE, 0 ),
+    flagsCount: 0,
+    gameState: GameState.NOT_STARTED,
+    isMouseDown: false,
+    openedCellsCount: 0
+  } );
 
   return (
-    <GameContext.Provider value={ defaultValue }>
+    <GameContext.Provider value={ { gameContext, setGameContext } }>
       { children }
     </GameContext.Provider>
   )

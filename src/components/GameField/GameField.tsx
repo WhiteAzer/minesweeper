@@ -11,81 +11,66 @@ import { showFlags } from "../../helpers/showFlags";
 
 
 export const GameField: FC = ( {} ) => {
-  const {
-    gameState,
-    setGameState,
-    map,
-    setMap,
-    toggleIsMouseDown,
-    isMouseDown,
-    flagsCount,
-    setFlagsCount,
-    openedCellsCount,
-    setOpenedCellsCount
-  } = useContext( GameContext );
+  const { gameContext, setGameContext } = useContext( GameContext );
 
   const handleClick = useCallback( ( e: BaseSyntheticEvent ) => {
     if ( e.target.dataset.i === undefined ) return;
-    if ( gameState === GameState.LOOSED || gameState === GameState.WINED ) return;
+    if ( gameContext.gameState === GameState.LOOSED || gameContext.gameState === GameState.WINED ) return;
 
     const i: number = +e.target.dataset.i;
     const j: number = +e.target.dataset.j;
 
-    if ( map[ i ][ j ].state === CellState.FLAG || map[ i ][ j ].state === CellState.GUESS ) return;
+    if ( gameContext.map[ i ][ j ].state === CellState.FLAG
+      || gameContext.map[ i ][ j ].state === CellState.GUESS ) return;
 
-    setMap( prev => {
-      let currentOpenedCellsCount = 0;
-      if ( gameState === GameState.NOT_STARTED ) {
-        setGameState( GameState.STARTED );
-        getGameMap( MAP_SIZE, BOMBS_COUNT, [ i, j ], prev );
+    setGameContext( prev => {
+      if ( prev.gameState === GameState.NOT_STARTED ) {
+        prev.gameState = GameState.STARTED;
+        getGameMap( MAP_SIZE, BOMBS_COUNT, [ i, j ], prev.map );
       }
 
-      if ( map[ i ][ j ].inner !== -1 ) {
-        currentOpenedCellsCount = cleanMap( prev, i, j );
+      if ( prev.map[ i ][ j ].inner !== -1 ) {
+        prev.openedCellsCount += cleanMap( prev.map, i, j );
       } else {
-        showBombs( prev, i, j );
-        setFlagsCount( 0 );
-        setGameState( GameState.LOOSED );
+        showBombs( prev.map, i, j );
+        prev.gameState = GameState.LOOSED;
       }
 
-      if ( MAP_SIZE * MAP_SIZE - BOMBS_COUNT - openedCellsCount - currentOpenedCellsCount === 0 ) {
-        setGameState( GameState.WINED );
-        showFlags( prev );
-        setFlagsCount( 0 );
-      } else {
-        setOpenedCellsCount( currentOpenedCellsCount + openedCellsCount );
+      if ( MAP_SIZE * MAP_SIZE - BOMBS_COUNT - prev.openedCellsCount === 0 ) {
+        prev.gameState = GameState.WINED;
+        showFlags( prev.map );
       }
 
-      return [ ...prev ];
+      return { ...prev };
     } )
-  }, [ gameState, map, openedCellsCount, gameState, flagsCount, openedCellsCount ] )
+  }, [ gameContext ] )
 
   const handleContextMenu = useCallback( ( e: BaseSyntheticEvent ) => {
     e.preventDefault();
     if ( e.target.dataset.i === undefined ) return;
-    if ( gameState === GameState.LOOSED || gameState === GameState.WINED ) return;
+    if ( gameContext.gameState === GameState.LOOSED || gameContext.gameState === GameState.WINED ) return;
 
     const i: number = +e.target.dataset.i;
     const j: number = +e.target.dataset.j;
-    setMap( prev => {
-      if ( map[ i ][ j ].state === CellState.ACTIVE && BOMBS_COUNT - flagsCount > 0 ) {
-        map[ i ][ j ].state = CellState.FLAG;
-        setFlagsCount( flagsCount + 1 )
-      } else if ( map[ i ][ j ].state === CellState.FLAG ) {
-        map[ i ][ j ].state = CellState.GUESS;
-        setFlagsCount( flagsCount - 1 )
-      } else if ( map[ i ][ j ].state === CellState.GUESS )
-        map[ i ][ j ].state = CellState.ACTIVE;
+    setGameContext( prev => {
+      if ( prev.map[ i ][ j ].state === CellState.ACTIVE && BOMBS_COUNT - prev.flagsCount > 0 ) {
+        prev.map[ i ][ j ].state = CellState.FLAG;
+        prev.flagsCount++;
+      } else if ( prev.map[ i ][ j ].state === CellState.FLAG ) {
+        prev.map[ i ][ j ].state = CellState.GUESS;
+        prev.flagsCount--;
+      } else if ( prev.map[ i ][ j ].state === CellState.GUESS )
+        prev.map[ i ][ j ].state = CellState.ACTIVE;
 
 
-      return [ ...prev ];
+      return { ...prev };
     } )
-  }, [ gameState, map, flagsCount ] )
+  }, [ gameContext ] )
 
   const handleMouse = useCallback( () => {
-    if ( gameState !== GameState.WINED && gameState !== GameState.LOOSED )
-      toggleIsMouseDown();
-  }, [ isMouseDown, gameState ] );
+    if ( gameContext.gameState !== GameState.WINED && gameContext.gameState !== GameState.LOOSED )
+      setGameContext( { ...gameContext, isMouseDown: !gameContext.isMouseDown } );
+  }, [ gameContext ] );
 
   const preventDragHandler = useCallback(
     ( e: BaseSyntheticEvent ) => e.preventDefault()
@@ -99,9 +84,9 @@ export const GameField: FC = ( {} ) => {
          onMouseUp={ handleMouse }
          onDragStart={ preventDragHandler }>
       {
-        map.map( ( row, i ) =>
+        gameContext.map.map( ( row, i ) =>
           row.map( ( cell, j ) =>
-            <GameCell cell={ map[ i ][ j ] } i={ i } j={ j } key={ `${ i }${ j }` }/>
+            <GameCell cell={ gameContext.map[ i ][ j ] } i={ i } j={ j } key={ `${ i }${ j }` }/>
           )
         )
       }

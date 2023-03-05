@@ -1,4 +1,3 @@
-import { ReactElement } from "react";
 import Zero from "../asset/time0.png";
 import One from "../asset/time1.png";
 import Two from "../asset/time2.png";

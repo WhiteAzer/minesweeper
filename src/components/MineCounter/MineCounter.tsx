@@ -6,14 +6,14 @@ import { GameContext } from "../../context/GameContext";
 import { BOMBS_COUNT } from "../../vars/game";
 
 
-export const MineCounter: FC = ( ) => {
-  const {flagsCount} = useContext(GameContext)
+export const MineCounter: FC = () => {
+  const { gameContext } = useContext( GameContext )
 
   return (
     <div className={ classNames( styles.MineCounter ) }>
       {
-        formatNum(BOMBS_COUNT - flagsCount > 0 ? BOMBS_COUNT - flagsCount : 0 ).map((el, i) =>
-          <img src={ el } className={ classNames( styles.MineCounter_item ) } key={i}/>
+        formatNum( BOMBS_COUNT - gameContext.flagsCount > 0 ? BOMBS_COUNT - gameContext.flagsCount : 0 ).map( ( el, i ) =>
+          <img src={ el } className={ classNames( styles.MineCounter_item ) } key={ i }/>
         )
       }
     </div>

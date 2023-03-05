@@ -1,6 +1,5 @@
 import { FC, useCallback, useContext } from "react";
 import styles from "./GameStateIndicator.module.scss"
-import classNames from "classnames";
 import { GameState } from "../../types/game";
 import { GameContext } from "../../context/GameContext";
 
@@ -21,15 +20,21 @@ const GameStateImgs = {
 }
 
 export const GameStateIndicator: FC = ( {} ) => {
-  const { gameState, setGameState, setMap, isMouseDown, setOpenedCellsCount } = useContext( GameContext );
+  const { gameContext, setGameContext } = useContext( GameContext );
 
   const handleClick = useCallback( () => {
-    setGameState( GameState.NOT_STARTED );
-    setMap(getGameMap( MAP_SIZE, 0 ))
-    setOpenedCellsCount(0);
-  }, [] );
+    setGameContext( prev => {
+      prev.gameState = GameState.NOT_STARTED;
+      prev.map = getGameMap( MAP_SIZE, 0 );
+      prev.openedCellsCount = 0;
+      prev.flagsCount = 0;
+
+      return { ...prev }
+    } )
+  }, [ gameContext ] );
 
   return (
-    <img src={ isMouseDown? MouseDown : GameStateImgs[ gameState ] } className={ styles.GameState } onClick={ handleClick }/>
+    <img src={ gameContext.isMouseDown ? MouseDown : GameStateImgs[ gameContext.gameState ] } className={ styles.GameState }
+         onClick={ handleClick }/>
   )
 }
