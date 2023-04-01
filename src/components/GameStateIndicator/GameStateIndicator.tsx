@@ -1,9 +1,9 @@
-import { FC, useCallback, useContext } from "react";
+import { FC, useCallback, useContext, useState } from "react";
 import styles from "./GameStateIndicator.module.scss"
 import { GameState } from "../../types/game";
 import { GameContext } from "../../context/GameContext";
 
-import NotStarted from "../../asset/notstarted.png"
+import Base from "../../asset/notstarted.png"
 import Started from "../../asset/started.png"
 import Loosed from "../../asset/loosed.png"
 import MouseDown from "../../asset/mouseDown.png"
@@ -13,16 +13,23 @@ import { getGameMap } from "../../helpers/getGameMap";
 import { MAP_SIZE } from "../../vars/game";
 
 const GameStateImgs = {
-  [ GameState.STARTED ]: Started,
+  [ GameState.STARTED ]: Base,
   [ GameState.LOOSED ]: Loosed,
   [ GameState.WINED ]: Wined,
-  [ GameState.NOT_STARTED ]: NotStarted
+  [ GameState.NOT_STARTED ]: Base
 }
 
 export const GameStateIndicator: FC = ( {} ) => {
   const { gameContext, setGameContext } = useContext( GameContext );
+  const [ isMouseDown, setIsMousedown ] = useState( false );
 
-  const handleClick = useCallback( () => {
+  const getSrc = () => {
+    if (isMouseDown) return Started
+    return gameContext.isMouseDown ? MouseDown : GameStateImgs[ gameContext.gameState ]
+  }
+
+  const handleMouseUp = () => {
+    setIsMousedown(false);
     setGameContext( prev => {
       prev.gameState = GameState.NOT_STARTED;
       prev.map = getGameMap( MAP_SIZE, 0 );
@@ -31,10 +38,16 @@ export const GameStateIndicator: FC = ( {} ) => {
 
       return { ...prev }
     } )
-  }, [ gameContext ] );
+  };
+
+  const handleMouseDown = () => {
+    setIsMousedown(true);
+  };
 
   return (
-    <img src={ gameContext.isMouseDown ? MouseDown : GameStateImgs[ gameContext.gameState ] } className={ styles.GameState }
-         onClick={ handleClick }/>
+    <img src={ getSrc() }
+         className={ styles.GameState }
+         onMouseDown={ handleMouseDown }
+         onMouseUp={ handleMouseUp }/>
   )
 }

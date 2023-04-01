@@ -11,18 +11,23 @@ export const cleanMap = ( map: GameMap, i: number, j: number ): number => {
 
   while ( queue.length ) {
     const [ x, y ] = queue.shift();
-    if (map[ x ][ y ].state === CellState.SELECTED) continue;
     map[ x ][ y ].state = CellState.SELECTED;
     openedCellsCount++;
 
-    if ( map[ x - 1 ] && map[ x - 1 ][ y ].state === CellState.ACTIVE && map[ x - 1 ][ y ].inner === 0 )
-      queue.push( [ x - 1, y ] );
-    if ( map[ x + 1 ] && map[ x + 1 ][ y ].state === CellState.ACTIVE && map[ x + 1 ][ y ].inner === 0 )
-      queue.push( [ x + 1, y ] );
-    if ( map[ x ][ y + 1 ] && map[ x ][ y + 1 ].state === CellState.ACTIVE && map[ x ][ y + 1 ].inner === 0 )
-      queue.push( [ x, y + 1 ] );
-    if ( map[ x ][ y - 1 ] && map[ x ][ y - 1 ].state === CellState.ACTIVE && map[ x ][ y - 1 ].inner === 0 )
-      queue.push( [ x, y - 1 ] );
+    if ( map[ x ][ y ].inner === 0 ) {
+      if ( map[ x - 1 ] ) {
+        if ( map[ x - 1 ][ y ].state === CellState.ACTIVE ) queue.push( [ x - 1, y ] );
+        if ( map[ x - 1 ][ y - 1] && map[ x - 1 ][ y - 1].state === CellState.ACTIVE ) queue.push( [ x - 1, y - 1] );
+        if ( map[ x - 1 ][ y + 1] && map[ x - 1 ][ y + 1].state === CellState.ACTIVE ) queue.push( [ x - 1, y + 1] );
+      }
+      if ( map[ x + 1 ]) {
+        if ( map[ x + 1 ][ y ].state === CellState.ACTIVE ) queue.push( [ x + 1, y ] );
+        if ( map[ x + 1 ][ y - 1] && map[ x + 1 ][ y - 1].state === CellState.ACTIVE ) queue.push( [ x + 1, y - 1] );
+        if ( map[ x + 1 ][ y + 1] && map[ x + 1 ][ y + 1].state === CellState.ACTIVE ) queue.push( [ x + 1, y + 1] );
+      }
+      if ( map[ x ][ y + 1 ] && map[ x ][ y + 1 ].state === CellState.ACTIVE ) queue.push( [ x, y + 1 ] );
+      if ( map[ x ][ y - 1 ] && map[ x ][ y - 1 ].state === CellState.ACTIVE ) queue.push( [ x, y - 1 ] );
+    }
   }
 
   return openedCellsCount;
